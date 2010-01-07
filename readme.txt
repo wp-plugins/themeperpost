@@ -4,7 +4,7 @@ Donate link:
 Tags: theme switcher, dynamic themes
 Requires at least: 2.0
 Tested up to: 2.9
-stable tag: 
+stable tag: 1.1.0
 
 This plugin lets use a different theme for any Post or Page.
 
