@@ -22,9 +22,22 @@ Example of setting theme for one Post:
 
 If you are creating a small custom theme purely to style a Post or Page then you do not need to create many files within the theme.
 For styling a Post you only need a file in your theme directory called 'single.php', for styling a Page you only need 'page.php - this
-fits with the standard Wordpress file names for themes.
+fits with the standard Wordpress file names for themes. There's an example theme at http://www.steveify.com/themeperpost/.
+
+If you want to use an existing theme with this plugin then you will unfortunately have to make a few small changes to the theme before
+it will work. The changes are:
+
+1. Replace get_header() call with themeperpost_get_header().
+2. Replace get_sidebar() call with themeperpost_get_sidebar().
+3. Replace get_footer() call with themeperpost_get_footer().
+
+This is annoying but unavoidable.
 
 == Changelog ==
+
+= 1.1.0 =
+
+* Add calls to replace get_header, get_footer and get_sidebar so that existing themes can be used with this plugin.
 
 = 1.0.1 =
 

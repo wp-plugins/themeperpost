@@ -1,7 +1,7 @@
 <?php
 /*
     Plugin Name: ThemePerPost
-    Version: 1.0.1
+    Version: 1.1.0
     Plugin URI: http://www.steveify.com/themeperpost
     Description: Allows you to apply a different theme for any Post or Page.
     Author: Steve Claridge
@@ -39,18 +39,69 @@ function themeperpost_need_switch()
   return "";
 }
 
+/* Filter hook for bloginfo. It modifies URLs for stylesheet_url and template_ul */
 function themeperpost_bloginfo( $result, $show )
 {
-  if ( $show == 'template_url' )
+  $switch = themeperpost_need_switch();
+  if ( $switch != '' )
   {
-    $switch = themeperpost_need_switch();
-    if ( $switch != '' )
+    if ( $show == 'template_url' || $show == 'stylesheet_directory' || $show == 'stylesheet_url' )
     {
       $result = get_theme_root_uri() . '/' . $switch;
     }
+
+    if ( $show == 'stylesheet_url' )
+    {
+      $result .= '/style.css';
+    }   
   }
 
   return $result;
+}
+
+/* Used in place of get_header() */
+function themeperpost_get_header()
+{
+  $switch = themeperpost_need_switch();
+  if ( $switch != '' )
+  {
+    require_once( get_theme_root() . '/' . $switch . '/header.php' );
+  }
+}
+
+/* Used in place of get_footer() */
+function themeperpost_get_footer()
+{
+  $switch = themeperpost_need_switch();
+  if ( $switch != '' )
+  {
+    require_once( get_theme_root() . '/' . $switch . '/footer.php' );
+  }
+}
+
+/* Used in place of get_sidebar() */
+function themeperpost_get_sidebar()
+{
+  $switch = themeperpost_need_switch();
+  if ( $switch != '' )
+  {
+    require_once( get_theme_root() . '/' . $switch . '/sidebar.php' );
+  }
+}
+
+/* Filter hook for comments template. the get_comments function has a handy filter
+   which allows me to modify it to use themeperpost theme instead of the default. Whereas
+   get_footer, get_header and get_sidebar have an action instead of a filter so this plugin
+   cannot alter them */
+function themeperpost_comments_template( $path )
+{
+  $switch = themeperpost_need_switch();
+  if ( $switch != '' )
+  {
+    return get_theme_root() . '/' . $switch . '/comments.php';  
+  }  
+  
+  return $path;
 }
 
 function themeperpost_switch_template()
@@ -59,11 +110,12 @@ function themeperpost_switch_template()
   if ( $switch != '' )
   {
     $page = is_page() ? '/page.php' : '/single.php';
-    include( get_theme_root() . '/' . $switch . $page );
+    require_once( get_theme_root() . '/' . $switch . $page );
     exit;
   }
 }
 
 add_filter( 'bloginfo_url', 'themeperpost_bloginfo', 1, 2 );
 add_action( 'template_redirect', 'themeperpost_switch_template' );
+add_filter( 'comments_template', 'themeperpost_comments_template', 1, 1 );
 
