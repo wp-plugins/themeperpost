@@ -25,28 +25,45 @@
 
 */
 
-function themeperpost_template_url()
+/* 
+  Determines whether a post or page is being displayed and whether it has a themepepost custom field set 
+  Returns the name of the theme to switch to or '' if no switch is needed
+*/
+function themeperpost_need_switch()
 {
-  global $post;
-  echo get_theme_root_uri() . '/' . get_post_meta( $post->ID, 'themeperpost', true );
+  if ( is_single() or is_page() )
+  {
+    global $post;
+    return get_post_meta( $post->ID, 'themeperpost', true );
+  }
+  return "";
+}
+
+function themeperpost_bloginfo( $result, $show )
+{
+  if ( $show == 'template_url' )
+  {
+    $switch = themeperpost_need_switch();
+    if ( $switch != '' )
+    {
+      $result = get_theme_root_uri() . '/' . $switch;
+    }
+  }
+
+  return $result;
 }
 
 function themeperpost_switch_template()
 {
-  $switch = '';
-  if ( is_single() or is_page() )
+  $switch = themeperpost_need_switch();
+  if ( $switch != '' )
   {
-    global $post;
-    $switch = get_post_meta( $post->ID, 'themeperpost', true );
-  
-    if ( $switch != '' )
-    {
-      $page = is_page() ? '/page.php' : '/single.php';
-      include( get_theme_root() . '/' . $switch . $page );
-    	exit;
-    }
+    $page = is_page() ? '/page.php' : '/single.php';
+    include( get_theme_root() . '/' . $switch . $page );
+    exit;
   }
 }
 
+add_filter( 'bloginfo_url', 'themeperpost_bloginfo', 1, 2 );
 add_action( 'template_redirect', 'themeperpost_switch_template' );
 

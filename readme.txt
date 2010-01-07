@@ -4,7 +4,7 @@ Donate link:
 Tags: theme switcher, dynamic themes
 Requires at least: 2.0
 Tested up to: 2.9
-stable tag: 1.0.0
+stable tag: 
 
 This plugin lets use a different theme for any Post or Page.
 
@@ -26,7 +26,12 @@ fits with the standard Wordpress file names for themes.
 
 == Changelog ==
 
+= 1.0.1 =
+
+* Changed so that bloginfo('template_url') calls work
+
 = 1.0.0 =
+
 * First public release.
 
 == Installation ==
