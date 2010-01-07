@@ -1,7 +1,7 @@
 <?php
 /*
     Plugin Name: ThemePerPost
-    Version: 1.0.0
+    Version: 1.0.1
     Plugin URI: http://www.steveify.com/themeperpost
     Description: Allows you to apply a different theme for any Post or Page.
     Author: Steve Claridge
