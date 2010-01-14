@@ -1,13 +1,13 @@
 <?php
 /*
     Plugin Name: ThemePerPost
-    Version: 1.1.0
+    Version: 1.1.1
     Plugin URI: http://www.steveify.com/themeperpost
     Description: Allows you to apply a different theme for any Post or Page.
     Author: Steve Claridge
     Author URI: http://www.steveify.com
 
-    Copyright 2009/2010 Steve Claridge  (email : stephen.claridge@tiscali.co.uk)
+    Copyright 2009/2010 Steve Claridge  (email : steve@steveify.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -115,7 +115,47 @@ function themeperpost_switch_template()
   }
 }
 
+/**
+* Filter hook for get_template_directory_uri function. $dir is the
+* directory as set by the site's current main theme, $name is the site's
+* current theme's name. If themeperpost custom field is set on the post
+* or page being viewed then we return our new theme URI, otherwise return
+* already set one.
+*/
+function themeperpost_template_directory_uri( $dir, $name )
+{
+  $switch = themeperpost_need_switch();
+  if ( $switch != '' )
+  {
+    return get_theme_root_uri() . '/' . $switch;
+  }
+
+  return $dir;
+}
+
+/**
+* Filter hook for get_template_directory function. $dir is the
+* directory as set by the site's current main theme, $name is the site's
+* current theme's name. If themeperpost custom field is set on the post
+* or page being viewed then we return our new theme's dir, otherwise return
+* already set one.
+*/
+function themeperpost_template_directory( $dir, $name )
+{
+  $switch = themeperpost_need_switch();
+  if ( $switch != '' )
+  {
+    return get_theme_root() . '/' . $switch;
+  }
+
+  return $dir;
+}
+
 add_filter( 'bloginfo_url', 'themeperpost_bloginfo', 1, 2 );
 add_action( 'template_redirect', 'themeperpost_switch_template' );
 add_filter( 'comments_template', 'themeperpost_comments_template', 1, 1 );
+add_filter( 'template_directory_uri', 'themeperpost_template_directory_uri', 1, 2 );
+add_filter( 'template_directory', 'themeperpost_template_directory', 1, 2 );
+
+
 

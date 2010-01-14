@@ -4,7 +4,7 @@ Donate link:
 Tags: theme switcher, dynamic themes
 Requires at least: 2.0
 Tested up to: 2.9
-stable tag: 1.1.0
+stable tag: 1.1.1
 
 This plugin lets use a different theme for any Post or Page.
 
@@ -35,13 +35,17 @@ This is annoying but unavoidable.
 
 == Changelog ==
 
+= 1.1.1 =
+
+* Updated so that get_template_directory_uri() and get_template_directory() calls use the right theme dir.
+
 = 1.1.0 =
 
 * Add calls to replace get_header, get_footer and get_sidebar so that existing themes can be used with this plugin.
 
 = 1.0.1 =
 
-* Changed so that bloginfo('template_url') calls work
+* Changed so that bloginfo('template_url') calls work.
 
 = 1.0.0 =
 
